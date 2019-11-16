@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
             lottieAnim.setAnimation(R.raw.failed_lottie);
             lottieAnim.playAnimation();
         }
-        String title = isUserWin ? "You are a Win!" : "You are a loser!";
+        String title = isUserWin ? "You are a Winner!" : "You are a loser!";
 
         new AlertDialog.Builder(this)
                 .setTitle(title)
