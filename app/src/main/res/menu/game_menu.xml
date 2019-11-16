@@ -3,5 +3,5 @@
     <item android:id="@+id/restart"
         android:title="Restart" />
     <item android:id="@+id/endGame"
-        android:title="" />
+        android:title="End the game"/>
 </menu>

@@ -1,13 +1,22 @@
 package com.ofirelarat.memofun;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -37,22 +46,6 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
         refreshGridAfterShowRightCards();
     }
 
-//    @Override
-//    public void onWindowFocusChanged(boolean hasFocus) {
-//        super.onWindowFocusChanged(hasFocus);
-//
-//        refreshGridAfterShowRightCards();
-//    }
-
-    public void endGameOnClick(View view) {
-        updateCardsGrid(cards, GameStatus.EndGame);
-    }
-
-
-    public void restartOnClick(View view) {
-        restartGame();
-    }
-
     public void restartGame() {
         cards = initCards();
         updateCardsGrid(cards, GameStatus.InitGame);
@@ -61,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
 
     private CardStatus[] initCards(){
         Set<Integer> gamePickedCards = pickGameCards();
-        Random rand = new Random();
         CardStatus[] cards = new CardStatus[width * height];
         for(int i = 0; i < cards.length; i++){
             cards[i] = new CardStatus(false, gamePickedCards.contains(i));
@@ -104,10 +96,21 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
 
     @Override
     public void gameEnd(boolean isUserWin) {
-        String title = isUserWin ? "You Win!" : "You loser!";
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.end_game_dialog_view, null, false);
+        LottieAnimationView lottieAnim = view.findViewById(R.id.lottie_anim);
+        if (isUserWin) {
+            lottieAnim.setAnimation(R.raw.trophy_lottie);
+            lottieAnim.playAnimation();
+        } else {
+            lottieAnim.setAnimation(R.raw.failed_lottie);
+            lottieAnim.playAnimation();
+        }
+        String title = isUserWin ? "You are a Win!" : "You are a loser!";
+
         new AlertDialog.Builder(this)
                 .setTitle(title)
-                .setMessage("Would you like to play again?")
+                .setView(view)
                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -121,5 +124,27 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.game_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.restart:
+                restartGame();
+                break;
+            case R.id.endGame:
+                updateCardsGrid(cards, GameStatus.EndGame);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
