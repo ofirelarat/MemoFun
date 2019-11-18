@@ -1,6 +1,5 @@
 package com.ofirelarat.memofun;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,11 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -24,7 +21,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements IGameStateChangeActions {
@@ -124,16 +120,11 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
     }
 
     private void refreshGridAfterShowRightCards(){
-        Timer timer_interact=new Timer();
-        timer_interact.schedule(new TimerTask() {
+        new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                runOnUiThread(new TimerTask() {
-                    @Override
-                    public void run() {
-                        updateCardsGrid(cards, GameStatus.InProgress);
-                    }
-                });
+            findViewById(R.id.lottie_win_anim).setVisibility(View.GONE);
+            updateCardsGrid(cards, GameStatus.InProgress);
             }
         }, 2000);
     }
@@ -192,18 +183,7 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
                 winningAnim.setAnimation(R.raw.fireworks_lottie);
                 break;
         }
+        winningAnim.playAnimation();
         winningAnim.setVisibility(View.VISIBLE);
-        Timer timer_interact=new Timer();
-        timer_interact.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new TimerTask() {
-                    @Override
-                    public void run() {
-                        winningAnim.setVisibility(View.GONE);
-                    }
-                });
-            }
-        }, 1000);
     }
 }
