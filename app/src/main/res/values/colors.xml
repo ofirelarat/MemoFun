@@ -5,7 +5,7 @@
     <color name="colorAccent">#27ae60</color>
 
     <color name="CheckedCardByGame">#2ecc71</color>
-    <color name="CheckedCardByUser">#3498db</color>
+    <color name="CheckedCardByUser">#27ae60</color>
     <color name="NotCheckedCard">#ecf0f1</color>
     <color name="CheckedCardError">#e74c3c</color>
 </resources>

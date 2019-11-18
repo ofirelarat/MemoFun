@@ -16,7 +16,7 @@
             android:scaleType="centerCrop"
             android:layout_centerHorizontal="true"
             app:lottie_autoPlay="true"
-            app:lottie_rawRes="@raw/trophy_lottie"
+            app:lottie_rawRes="@raw/failed_lottie"
             app:lottie_loop="true" />
 
     </RelativeLayout>
