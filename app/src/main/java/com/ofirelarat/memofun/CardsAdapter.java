@@ -55,6 +55,7 @@ public class CardsAdapter extends BaseAdapter {
                         cards[i].setCheckedByUser(!cards[i].isCheckedByUser());
                         if (cards[i].isCheckedByUser() && cards[i].isCheckedByGame()) {
                             flipCardAnimation(cardView, R.color.CheckedCardByUser);
+                            gameStateChangeActions.updateScoreView();
                             if (isGameEnded()) {
                                 gameStateChangeActions.gameEnd(true);
                             }

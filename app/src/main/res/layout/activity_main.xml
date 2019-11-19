@@ -8,6 +8,20 @@
     tools:context=".MainActivity"
     android:background="@drawable/background">
 
+    <TextView
+        android:id="@+id/scoreText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="20dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="0"
+        android:textColor="#fff"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
     <GridView
         android:id="@+id/cardsGrid"
         android:layout_width="100dp"
