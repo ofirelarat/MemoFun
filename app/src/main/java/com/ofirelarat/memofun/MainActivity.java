@@ -34,12 +34,13 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity implements IGameStateChangeActions {
     private final int MAX_WIDTH = 6;
     private final int MAX_HEIGHT = 7;
-    private final int MAX_PICKED = 10;
+    private final int MAX_PICKED = 11;
     private final int MIN_WIDTH = 2;
     private final int MIN_HEIGHT = 2;
     private final int MIN_PICKED = 1;
     private final int CARD_VIEW_HEIGHT = 55;
     private final int CARD_VIEW_WIDTH = 50;
+    private final String AD_UNIT_ID = "ca-app-pub-9869565169779070/9163056845";
 
     private int width;
     private int height;
@@ -221,8 +222,7 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
     }
 
     private RewardedAd createAndLoadRewardedAd() {
-        RewardedAd rewardedAd = new RewardedAd(this,
-                "ca-app-pub-3940256099942544/5224354917");
+        RewardedAd rewardedAd = new RewardedAd(this, AD_UNIT_ID);
         RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
             @Override
             public void onRewardedAdLoaded() {
