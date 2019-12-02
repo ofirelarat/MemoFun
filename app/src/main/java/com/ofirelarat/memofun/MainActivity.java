@@ -1,10 +1,8 @@
 package com.ofirelarat.memofun;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,11 +19,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.rewarded.RewardItem;
-import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdCallback;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -40,15 +33,12 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
     private final int MIN_PICKED = 1;
     private final int CARD_VIEW_HEIGHT = 55;
     private final int CARD_VIEW_WIDTH = 50;
-    private final String AD_UNIT_ID = "ca-app-pub-9869565169779070/9163056845";
 
     private int width;
     private int height;
     private int numOfPickedCards;
     private int gameScore;
     private CardStatus[] cards;
-
-    private RewardedAd rewardedAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
         resetGameSizeAndScore();
         cards = initCards();
         updateCardsGrid(cards, GameStatus.InitGame);
-        rewardedAd = createAndLoadRewardedAd();
     }
 
     @Override
@@ -101,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
         height = MIN_HEIGHT;
         numOfPickedCards = MIN_PICKED;
         gameScore = 0;
+        ((TextView)findViewById(R.id.scoreText)).setText(String.valueOf(gameScore));
     }
 
     private CardStatus[] initCards(){
@@ -164,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
             updateGameSizes();
             restartGame();
         }else {
-            showRewardedAd();
+            AdManager.getInstance().showRewardedAd(this);
 
             SharedPreferencesMgr preferencesMgr = new SharedPreferencesMgr(this);
             preferencesMgr.writeNewScoerifIsHigher(gameScore);
@@ -182,17 +172,29 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
     private void showWinningAnimation(){
         final LottieAnimationView winningAnim = findViewById(R.id.lottie_win_anim);
         Random rand = new Random();
-        int randomInt = rand.nextInt(3);
+        int randomInt = rand.nextInt(5);
         switch(randomInt){
             case 0:
+                winningAnim.setSpeed(1.0f);
                 winningAnim.setAnimation(R.raw.trophy_lottie);
                 break;
             case 1:
+                winningAnim.setSpeed(1.0f);
                 winningAnim.setAnimation(R.raw.emoji_wink);
                 break;
             case 2:
+                winningAnim.setSpeed(1.0f);
                 winningAnim.setAnimation(R.raw.fireworks_lottie);
                 break;
+            case 3:
+                winningAnim.setSpeed(2.0f);
+                winningAnim.setAnimation(R.raw.tick_reveal);
+                break;
+            case 4:
+                winningAnim.setSpeed(1.2f);
+                winningAnim.setAnimation(R.raw.loading_crown);
+                break;
+
         }
         winningAnim.playAnimation();
         winningAnim.setVisibility(View.VISIBLE);
@@ -204,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
         new AlertDialog.Builder(this)
                 .setTitle("You are a loser!")
                 .setMessage("your score is: " + gameScore)
+                .setCancelable(false)
                 .setView(view)
                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -219,52 +222,5 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
                     }
                 })
                 .show();
-    }
-
-    private RewardedAd createAndLoadRewardedAd() {
-        RewardedAd rewardedAd = new RewardedAd(this, AD_UNIT_ID);
-        RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
-            @Override
-            public void onRewardedAdLoaded() {
-                // Ad successfully loaded.
-            }
-
-            @Override
-            public void onRewardedAdFailedToLoad(int errorCode) {
-                // Ad failed to load.
-            }
-        };
-        rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
-        return rewardedAd;
-    }
-
-    private void showRewardedAd(){
-        if (rewardedAd.isLoaded()) {
-            RewardedAdCallback adCallback = new RewardedAdCallback() {
-                @Override
-                public void onRewardedAdOpened() {
-                    // Ad opened.
-                }
-
-                @Override
-                public void onRewardedAdClosed() {
-                    // Ad closed.
-                    rewardedAd = createAndLoadRewardedAd();
-                }
-
-                @Override
-                public void onUserEarnedReward(@NonNull RewardItem reward) {
-                    // User earned reward.
-                }
-
-                @Override
-                public void onRewardedAdFailedToShow(int errorCode) {
-                    // Ad failed to display
-                }
-            };
-            rewardedAd.show(this, adCallback);
-        } else {
-            Log.d("TAG", "The rewarded ad wasn't loaded yet.");
-        }
     }
 }

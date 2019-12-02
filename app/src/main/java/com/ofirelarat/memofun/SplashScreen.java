@@ -22,6 +22,8 @@ public class SplashScreen extends AppCompatActivity {
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
+                String s = initializationStatus.toString();
+                AdManager.getInstance().loadAd(getApplicationContext());
             }
         });
 

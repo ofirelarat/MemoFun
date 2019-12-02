@@ -37,11 +37,11 @@
             android:id="@+id/lottie_win_anim"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             android:layout_centerHorizontal="true"
-            app:lottie_autoPlay="true"
+            app:lottie_autoPlay="false"
             app:lottie_rawRes="@raw/trophy_lottie"
-            app:lottie_loop="true"
+            app:lottie_loop="false"
             android:visibility="gone" />
 
     </RelativeLayout>
