@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MemoFun</string>
+    <string name="app_id">1019149499840</string>
+
+    <string name="server_client_id">1019149499840-tcv4e6dbji8jdj68hjonspaj456e37eu.apps.googleusercontent.com</string>
+
 </resources>

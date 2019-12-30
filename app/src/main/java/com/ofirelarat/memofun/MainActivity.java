@@ -19,6 +19,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.games.Games;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -158,6 +160,12 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
 
             SharedPreferencesMgr preferencesMgr = new SharedPreferencesMgr(this);
             preferencesMgr.writeNewScoerifIsHigher(gameScore);
+            try {
+                Games.getLeaderboardsClient(this, GoogleAccountMgr.getSignInAccount())
+                        .submitScore("CgkIwPus0NQdEAIQAQ", gameScore);
+            }catch (Exception ex){
+                Log.d("error", ex.getMessage());
+            }
 
             showEndGameDialog();
         }

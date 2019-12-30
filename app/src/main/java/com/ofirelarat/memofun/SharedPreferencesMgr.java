@@ -12,11 +12,15 @@ public class SharedPreferencesMgr {
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
     }
 
-    public void writeNewScoerifIsHigher(int newScore){
+    public boolean writeNewScoerifIsHigher(int newScore){
         int oldHighScore = sharedPreferences.getInt(SHARED_PREFERENCES_HIGH_SCORE_KEY, 0);
         if(oldHighScore < newScore) {
             sharedPreferences.edit().putInt(SHARED_PREFERENCES_HIGH_SCORE_KEY, newScore).commit();
+
+            return true;
         }
+
+        return false;
     }
 
     public int getHighScore(){

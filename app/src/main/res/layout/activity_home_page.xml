@@ -6,18 +6,54 @@
     tools:context=".HomePage"
     android:background="@drawable/background_2">
 
-    <Button
-        android:id="@+id/startBtn"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/circle"
-        android:text="start"
-        android:textColor="#fff"
-        android:textSize="60dp"
-        android:padding="35dp"
         android:layout_centerInParent="true"
-        android:onClick="onClickStart"/>
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/startBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle"
+            android:text="start "
+            android:textColor="#fff"
+            android:textSize="57dp"
+            android:padding="32dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="15dp"
+            android:drawableEnd="@drawable/game_controller"
+            android:onClick="onClickStart"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+                    <Button
+                        android:id="@+id/leaderBoardBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/circle_white"
+                        android:text="Leaderboard "
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="22dp"
+                        android:padding="13dp"
+                        android:drawableEnd="@drawable/trophy"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="45dp"
+                        android:layout_weight="1"
+                        android:onClick="onClickLeaderBoard"/>
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+    </LinearLayout>
     <RelativeLayout
         android:id="@+id/scoreContainer"
         android:layout_width="match_parent"
