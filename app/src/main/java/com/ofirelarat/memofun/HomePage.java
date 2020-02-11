@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -54,6 +55,8 @@ public class HomePage extends AppCompatActivity {
         }
 
         GoogleAccountMgr.init(this);
+
+        openRateThisAppDialog();
     }
 
     public void onClickStart(View view) {
@@ -82,6 +85,22 @@ public class HomePage extends AppCompatActivity {
         } catch (Throwable ex) {
             Toast.makeText(HomePage.this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void openRateThisAppDialog(){
+        final String appURL = "https://play.google.com/store/apps/details?id=com.ofirelarat.memofun";
+
+        final RatingDialog ratingDialog = new RatingDialog.Builder(this)
+                .playstoreUrl(appURL)
+                .session(4)
+                .onRatingChanged(new RatingDialog.Builder.RatingDialogListener() {
+                    @Override
+                    public void onRatingSelected(float rating, boolean thresholdCleared) {
+                        Toast.makeText(getApplicationContext(), "Thanks!", Toast.LENGTH_LONG).show();
+                    }
+                }).build();
+
+        ratingDialog.show();
     }
 
     @Override
