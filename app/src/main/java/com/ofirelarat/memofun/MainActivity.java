@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -152,10 +153,13 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
     @Override
     public void gameEnd(boolean isUserWin) {
         if (isUserWin) {
+            makeSoundEffect(R.raw.tada_sound);
             showWinningAnimation();
             updateGameSizes();
             restartGame();
         }else {
+            makeSoundEffect(R.raw.sad_sound);
+
             AdManager.getInstance().showRewardedAd(this);
 
             SharedPreferencesMgr preferencesMgr = new SharedPreferencesMgr(this);
@@ -230,5 +234,10 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
                     }
                 })
                 .show();
+    }
+
+    private void makeSoundEffect(int soundRes){
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, soundRes);
+        mediaPlayer.start();
     }
 }
