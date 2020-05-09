@@ -20,7 +20,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.games.Games;
 
 import java.util.HashSet;
@@ -160,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
         }else {
             makeSoundEffect(R.raw.sad_sound);
 
-            AdManager.getInstance().showRewardedAd(this);
+            AdManager.getInstance(this).showInterstitialAd(this);
 
             SharedPreferencesMgr preferencesMgr = new SharedPreferencesMgr(this);
             preferencesMgr.writeNewScoerifIsHigher(gameScore);
@@ -237,7 +236,10 @@ public class MainActivity extends AppCompatActivity implements IGameStateChangeA
     }
 
     private void makeSoundEffect(int soundRes){
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, soundRes);
-        mediaPlayer.start();
+        SharedPreferencesMgr preferencesMgr = new SharedPreferencesMgr(this);
+        if(!preferencesMgr.getIsSilent()) {
+            MediaPlayer mediaPlayer = MediaPlayer.create(this, soundRes);
+            mediaPlayer.start();
+        }
     }
 }

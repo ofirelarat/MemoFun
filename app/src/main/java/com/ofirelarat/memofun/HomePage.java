@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,23 +39,19 @@ import java.util.concurrent.ExecutionException;
 
 public class HomePage extends AppCompatActivity {
 
+    SharedPreferencesMgr preferencesMgr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        View scoreContainer = findViewById(R.id.scoreContainer);
 
-        SharedPreferencesMgr preferencesMgr = new SharedPreferencesMgr(this);
-        int highScore = preferencesMgr.getHighScore();
-        if(highScore != 0){
-            scoreContainer.setVisibility(View.VISIBLE);
-            ((TextView)findViewById(R.id.scoreText)).setText(String.valueOf(highScore));
-        }else{
-            scoreContainer.setVisibility(View.GONE);
-        }
+        preferencesMgr = new SharedPreferencesMgr(this);
+        setUpView();
 
         GoogleAccountMgr.init(this);
+        AdManager.getInstance(this);
 
         openRateThisAppDialog();
     }
@@ -87,6 +84,36 @@ public class HomePage extends AppCompatActivity {
         }
     }
 
+    public void onClickSetSilent(View view) {
+        preferencesMgr.setIsSilent();
+        setSilentModeImageButton();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+            GoogleSignInAccount signInAccount = result.getSignInAccount();
+            GoogleAccountMgr.setSignInAccount(signInAccount);
+        }
+    }
+
+    private void setUpView(){
+        View scoreContainer = findViewById(R.id.scoreContainer);
+        int highScore = preferencesMgr.getHighScore();
+        if(highScore != 0){
+            scoreContainer.setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.scoreText)).setText(String.valueOf(highScore));
+        }else{
+            scoreContainer.setVisibility(View.GONE);
+        }
+
+        setSilentModeImageButton();
+    }
+
     private void openRateThisAppDialog(){
         final String appURL = "https://play.google.com/store/apps/details?id=com.ofirelarat.memofun";
 
@@ -103,15 +130,14 @@ public class HomePage extends AppCompatActivity {
         ratingDialog.show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void setSilentModeImageButton(){
+        boolean isSilent = preferencesMgr.getIsSilent();
+        ImageButton silentModeBtn = findViewById(R.id.silentModeBtn);
 
-        if (requestCode == 1) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
-            GoogleSignInAccount signInAccount = result.getSignInAccount();
-            GoogleAccountMgr.setSignInAccount(signInAccount);
+        if(isSilent){
+            silentModeBtn.setImageResource(android.R.drawable.ic_lock_silent_mode);
+        }else{
+            silentModeBtn.setImageResource(android.R.drawable.ic_lock_silent_mode_off);
         }
     }
 }
