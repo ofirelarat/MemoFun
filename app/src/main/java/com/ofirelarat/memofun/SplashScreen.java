@@ -15,14 +15,21 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        final SharedPreferencesMgr preferencesMgr = new SharedPreferencesMgr(this);
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashScreen.this, HomePage.class);
-                SplashScreen.this.startActivity(mainIntent);
+                Intent intent;
+                if(preferencesMgr.isFirstTimeUse()){
+                    intent = new Intent(SplashScreen.this, OnBoardingActivity.class);
+                }else {
+                    intent = new Intent(SplashScreen.this, HomePage.class);
+                }
+
+                SplashScreen.this.startActivity(intent);
                 SplashScreen.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
